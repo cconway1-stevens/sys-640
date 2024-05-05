@@ -1,67 +1,28 @@
 from scipy.optimize import linprog
 
-# Part (a)
+# Costs matrix
+costs = [4, 2, 3, 3, 2, 1]
 
-# Define the costs matrix
-costs_a = [
-    [4, 2, 3],  # Plant A to Warehouses 1, 2, 3
-    [3, 2, 1]   # Plant B to Warehouses 1, 2, 3
+# Coefficients for the constraints
+A_eq = [
+    [1, 1, 1, 0, 0, 0],  # Factory A supply
+    [0, 0, 0, 1, 1, 1],  # Factory B supply
+    [1, 0, 0, 1, 0, 0],  # Warehouse 1 demand
+    [0, 1, 0, 0, 1, 0],  # Warehouse 2 demand
+    [0, 0, 1, 0, 0, 1]   # Warehouse 3 demand
 ]
 
-# Supply from plants
+# Supply and demand
+b_eq_a = [18, 22, 10, 20, 10]  # Part (a) supply and demand
+b_eq_b = [18, 22, 14, 24, 14]  # Part (b) updated demand
 
-supply_a = [18, 22]
+# Bounds for each variable, all shipments must be non-negative
+x_bounds = [(0, None)] * 6  # None implies no upper bound
 
-# Demand at warehouses
+# Solving part (a)
+result_a = linprog(c=costs, A_eq=A_eq, b_eq=b_eq_a, bounds=x_bounds, method='highs')
 
-demand_a = [10, 20, 10]
+# Solving part (b)
+result_b = linprog(c=costs, A_eq=A_eq, b_eq=b_eq_b, bounds=x_bounds, method='highs')
 
-# Set up the bounds for the amount each route can carry, all routes are initially set from 0 to None
-bounds_a = [(0, None)] * (2 * 3)
-
-# Supply constraints (negative values because they are inequalities in the <= form)
-supply_constraints_a = [
-    [1, 1, 1, 0, 0, 0],  # Total sent out by Plant A
-    [0, 0, 0, 1, 1, 1]   # Total sent out by Plant B
-]
-
-# Demand constraints
-demand_constraints_a = [
-    [1, 0, 0, 1, 0, 0],  # Demand at Warehouse 1
-    [0, 1, 0, 0, 1, 0],  # Demand at Warehouse 2
-    [0, 0, 1, 0, 0, 1]   # Demand at Warehouse 3
-]
-
-# Coefficients for supply and demand constraints
-supply_eq_a = supply_a
-demand_eq_a = demand_a
-
-# Flatten cost matrix for the linprog function
-c_flatten_a = [item for sublist in costs_a for item in sublist]
-
-# Combine all constraints
-A_eq_a = supply_constraints_a + demand_constraints_a
-b_eq_a = supply_eq_a + demand_eq_a
-
-# Solve the linear programming problem for part (a)
-result_a = linprog(c=c_flatten_a, A_eq=A_eq_a, b_eq=b_eq_a, bounds=bounds_a, method='highs')
-
-# Part (b) - updated demands
-demand_b = [d + 4 for d in demand_a]  # Each warehouse has an increased demand by 4 units
-b_eq_b = supply_a + demand_b
-
-# Solve the linear programming problem for part (b)
-result_b = linprog(c=c_flatten_a, A_eq=A_eq_a, b_eq=b_eq_b, bounds=bounds_a, method='highs')
-
-
-# # Return the results for both parts
-# result_a, result_b
-
-
-#Print the results
-
-print("Part (a) - Optimal cost: ", result_a.fun)
-print("Part (a) - Optimal solution: ", result_a.x)
-print("Part (b) - Optimal cost: ", result_b.fun)
-print("Part (b) - Optimal solution: ", result_b.x)
-
+result_a, result_b

@@ -1,15 +1,14 @@
-
 # Martin-Beck Company Plant Location and Distribution Model
 
 ## Problem Statement
 
-The Martin-Beck Company is assessing options for expanding its production facilities and streamlining its distribution network to better meet rising customer demand. Their current operation, based in St. Louis, has a production limit of 30,000 units, which is no longer sufficient. The company is evaluating four new potential sites for plant development: Detroit, Denver, Toledo, and Kansas City. The primary goal is to minimize the combined costs of establishing new plants and distributing products to various markets.
+Martin-Beck Company aims to enhance its production capabilities and streamline distribution networks to meet increasing customer demands effectively. Currently based in St. Louis with a production limit of 30,000 units, the company seeks to expand. Four potential new plant locations are under evaluation: Detroit, Denver, Toledo, and Kansas City. The primary objective is to minimize costs associated with establishing new plants and distributing products to diverse markets.
 
 ## Part a) Linear Programming Model Development
 
 **Decision Variables:**
-- $x_{ij}$: the number of units shipped from plant $i$ to destination $j$.
-- $y_i$: binary variable where $y_i = 1$ if plant $i$ is built, $y_i = 0$ otherwise.
+- $x_{ij}$: units shipped from plant $i$ to destination $j$.
+- $y_i$: binary variable indicating if plant $i$ is built.
 
 **Objective Function:**
 - Minimize $Z = \sum_{i} F_i y_i + \sum_{i} \sum_{j} C_{ij} x_{ij}$
@@ -23,29 +22,29 @@ The Martin-Beck Company is assessing options for expanding its production facili
    - $D_j$: demand at destination $j$
 3. Non-Negativity and Binary Constraints: $ x_{ij} \geq 0 $ for all $i,j$ and $ y_i \in \{0, 1\} $ for all $i$
 
-This part of the model lays the groundwork for determining the optimal distribution and production strategy for Martin-Beck Company. It combines linear programming techniques with strategic planning to analyze and minimize total costs.
+This model forms the basis for optimizing Martin-Beck Company's distribution and production strategy, blending linear programming with strategic planning to minimize overall costs.
 
 ## Part b) Modification for Policy Restriction: Detroit or Toledo
 
 **Additional Constraint:**
-- $y_{	ext{Detroit}} + y_{	ext{Toledo}} = 1$
+- $y_{\text{Detroit}} + y_{\text{Toledo}} = 1$
 
-To comply with internal policies or local regulatory requirements, the company considers an additional constraint. The decision mandates that between Detroit and Toledo, only one plant can be operational. This constraint ensures that strategic decisions align with broader company policies or regulatory frameworks.
+To adhere to internal policies or regulatory requirements, the company imposes a constraint: either Detroit or Toledo can operate, but not both. This ensures strategic decisions align with broader company policies or regulations.
 
 ## Part c) Modification for Policy Restriction: Denver, Kansas City, and St. Louis
 
 **Additional Constraint:**
-- $y_{	ext{Denver}} + y_{	ext{Kansas City}} + y_{	ext{St. Louis}} \leq 2$
+- $y_{\text{Denver}} + y_{\text{Kansas City}} + y_{\text{St. Louis}} \leq 2$
 
-This modification to the model accounts for another strategic decision that limits the operational scope within Denver, Kansas City, and St. Louis to two operational plants at most. This policy could be motivated by investment limitations, risk management strategies, or logistical efficiencies.
+Another strategic decision restricts operational plants in Denver, Kansas City, and St. Louis to a maximum of two. This could result from investment limitations, risk management strategies, or logistical efficiencies.
 
 ## Part d) Modification for Dual Capacity in Denver
 
 **New Decision Variables:**
-- $y_{	ext{Denver-small}}$ and $y_{	ext{Denver-large}}$: binary variables for the small and large capacities, respectively.
+- $y_{\text{Denver-small}}$ and $y_{\text{Denver-large}}$: binary variables for small and large capacities.
 
 **Modified Constraints and Objective Function:**
-- Capacity for Denver: $ \sum_{j} x_{	ext{Denver}, j} \leq 30000 y_{	ext{Denver-small}} + 60000 y_{	ext{Denver-large}} $
-- Objective Function Update: Include costs for both sizes: $375000 y_{	ext{Denver-small}} + 550000 y_{	ext{Denver-large}}$
+- Capacity for Denver: $ \sum_{j} x_{\text{Denver}, j} \leq 30000 y_{\text{Denver-small}} + 60000 y_{\text{Denver-large}} $
+- Objective Function Update: Includes costs for both sizes: $375000 y_{\text{Denver-small}} + 550000 y_{\text{Denver-large}}$
 
-This part explores the flexibility of Denver's plant capacity, where the company considers two potential sizes—small and large. This choice allows the company to adapt more dynamically to market demands and production scalability, integrating varying costs and capacities into their strategic planning.
+Exploring Denver's plant capacity flexibility, the company considers two potential sizes—small and large. This choice enables dynamic market adaptation and production scalability, integrating varied costs and capacities into strategic planning.
