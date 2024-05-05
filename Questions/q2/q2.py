@@ -1,6 +1,7 @@
 from scipy.optimize import linprog
 
 # Part (a)
+
 # Define the costs matrix
 costs_a = [
     [4, 2, 3],  # Plant A to Warehouses 1, 2, 3
@@ -8,9 +9,11 @@ costs_a = [
 ]
 
 # Supply from plants
+
 supply_a = [18, 22]
 
 # Demand at warehouses
+
 demand_a = [10, 20, 10]
 
 # Set up the bounds for the amount each route can carry, all routes are initially set from 0 to None
@@ -51,8 +54,8 @@ b_eq_b = supply_a + demand_b
 result_b = linprog(c=c_flatten_a, A_eq=A_eq_a, b_eq=b_eq_b, bounds=bounds_a, method='highs')
 
 
-# Return the results for both parts
-result_a, result_b
+# # Return the results for both parts
+# result_a, result_b
 
 
 #Print the results
