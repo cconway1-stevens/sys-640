@@ -1,28 +1,56 @@
 from scipy.optimize import linprog
 
-# Costs matrix
-costs = [4, 2, 3, 3, 2, 1]
+def solve_transportation_problem(demands):
+    # Cost matrix for transportation from factories to warehouses
+    cost = [4, 2, 3,   # Costs from Plant A to Warehouses 1, 2, 3
+            3, 2, 1]   # Costs from Plant B to Warehouses 1, 2, 3
 
-# Coefficients for the constraints
-A_eq = [
-    [1, 1, 1, 0, 0, 0],  # Factory A supply
-    [0, 0, 0, 1, 1, 1],  # Factory B supply
-    [1, 0, 0, 1, 0, 0],  # Warehouse 1 demand
-    [0, 1, 0, 0, 1, 0],  # Warehouse 2 demand
-    [0, 0, 1, 0, 0, 1]   # Warehouse 3 demand
-]
+    # Supply constraints for factories A and B
+    A_eq = [
+        [1, 1, 1, 0, 0, 0],  # Total units from Plant A
+        [0, 0, 0, 1, 1, 1]   # Total units from Plant B
+    ]
 
-# Supply and demand
-b_eq_a = [18, 22, 10, 20, 10]  # Part (a) supply and demand
-b_eq_b = [18, 22, 14, 24, 14]  # Part (b) updated demand
+    # Right hand side values for factory constraints
+    b_eq = [18, 22]  # Total production units available at Plant A and B
 
-# Bounds for each variable, all shipments must be non-negative
-x_bounds = [(0, None)] * 6  # None implies no upper bound
+    # Demand constraints for each warehouse
+    A_eq_demand = [
+        [1, 0, 0, 1, 0, 0],  # Demand at Warehouse 1
+        [0, 1, 0, 0, 1, 0],  # Demand at Warehouse 2
+        [0, 0, 1, 0, 0, 1]   # Demand at Warehouse 3
+    ]
 
-# Solving part (a)
-result_a = linprog(c=costs, A_eq=A_eq, b_eq=b_eq_a, bounds=x_bounds, method='highs')
+    # Add demand constraints to the matrix
+    A_eq.extend(A_eq_demand)
+    b_eq.extend(demands)
 
-# Solving part (b)
-result_b = linprog(c=costs, A_eq=A_eq, b_eq=b_eq_b, bounds=x_bounds, method='highs')
+    # Bounds for each variable to ensure non-negative solutions
+    bounds = [(0, None) for _ in range(6)]
 
-result_a, result_b
+    # Solve the linear programming problem
+    result = linprog(c=cost, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
+
+    # Return results
+    return result
+
+# Solve part (a)
+result_a = solve_transportation_problem([10, 20, 10])
+
+# Solve part (b) with increased demands
+result_b = solve_transportation_problem([14, 24, 14])
+
+# Print the results for both parts
+if result_a.success:
+    print("Part (a) solution (shipments from A to W1, W2, W3 and from B to W1, W2, W3):")
+    print(result_a.x)
+    print("Minimum cost for part (a): $", result_a.fun)
+else:
+    print("No feasible solution found for part (a).")
+
+if result_b.success:
+    print("\nPart (b) solution (shipments from A to W1, W2, W3 and from B to W1, W2, W3):")
+    print(result_b.x)
+    print("Minimum cost for part (b): $", result_b.fun)
+else:
+    print("No feasible solution found for part (b).")

@@ -1,0 +1,128 @@
+---
+runme:
+  id: 01HX635AGE5Z27MWYD5Z1JWS3T
+  version: v3
+---
+
+# Transportation Problem for John Galt Shipping
+
+## Problem Statement
+
+John Galt shipping wishes to ship a product that is made at two different factories to three different warehouses.
+The quantities produced and demands are as follows:
+
+- **Production**:
+
+   - Factory A: 18 units
+   - Factory B: 22 units
+
+- **Demand**:
+
+   - Warehouse #1: 10 units
+   - Warehouse #2: 20 units
+   - Warehouse #3: 10 units
+
+### Transportation Costs
+
+|          | Warehouse #1 | Warehouse #2 | Warehouse #3 |
+|----------|--------------|--------------|--------------|
+| Plant A  | $4           | $2           | $3           |
+| Plant B  | $3           | $2           | $1           |
+
+## Part (a)
+
+**Goal**: Determine how many units should be shipped from each factory to each warehouse to minimize transportation costs.
+
+### Theory
+
+The transportation problem is a type of linear programming problem where the objective is to minimize the cost of distributing a product from several suppliers (factories) to several consumers (warehouses). The decision variables, constraints, and objective function are defined as follows:
+
+#### Decision Variables
+
+$$
+\text{Let } x_{ij} \text{ represent the number of units transported from factory } i \text{ to warehouse } j.
+$$
+
+#### Objective Function
+
+The objective is to minimize the total transportation cost:
+$$
+\text{Cost} = 4x_{A1} + 2x_{A2} + 3x_{A3} + 3x_{B1} + 2x_{B2} + 1x_{B3}
+$$
+
+#### Constraints
+
+- __Supply Constraints__: Each factory has a limited supply capacity.
+   
+   $x_{A1} + x_{A2} + x_{A3} = 18$ \
+   $x_{B1} + x_{B2} + x_{B3} = 22$
+   
+- __Demand Constraints__: Each warehouse has a specific demand that must be met.
+   
+   $x_{A1} + x_{B1} = 10$\
+   $x_{A2} + x_{B2} = 20$ \
+   $x_{A3} + x_{B3} = 10$
+ 
+
+#### Non-negativity Constraints
+
+$$
+x_{ij} \geq 0 \, \text{for all } i, j
+$$
+
+### Python Code
+
+```python {"id":"01HX635AGD8W9XXMP7TE2V6PXB"}
+from scipy.optimize import linprog
+
+def solve_transportation_problem(demands):
+    cost = [4, 2, 3, 3, 2, 1]
+    A_eq = [
+        [1, 1, 1, 0, 0, 0],
+        [0, 0, 0, 1, 1, 1]
+    ]
+    b_eq = [18, 22] + demands
+    A_eq_demand = [
+        [1, 0, 0, 1, 0, 0],
+        [0, 1, 0, 0, 1, 0],
+        [0, 0, 1, 0, 0, 1]
+    ]
+    A_eq.extend(A_eq_demand)
+    bounds = [(0, None) for _ in range(6)]
+    result = linprog(c=cost, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
+    return result
+
+result_a = solve_transportation_problem([10, 20, 10])
+
+
+## Part (b)
+
+### Goal
+Assuming the demand at each warehouse is increased by 4 units (as per part (a)), determine the quantity of units that should be shipped from each factory to each warehouse.
+
+### Theory
+With the increase in demand at each warehouse, the total demand surpasses the combined production capacity of the factories, resulting in an infeasible solution within the provided constraints.
+
+### Python Code
+```python
+result_b = solve_transportation_problem([14, 24, 14])
+Results
+
+print(result_b)
+
+
+```
+
+### RESULTS
+
+```python {"id":"01HX63EFWG3H1S58YVG80W6ZZR"}
+No feasible solution was found for part (b).
+
+
+```
+
+The result "No feasible solution was found for part (b)" indicates that the transportation problem, as formulated for part (b), does not have a solution that satisfies all the constraints.
+
+In part (b) of the problem, the demand at each warehouse is increased by 4 units compared to part (a). This results in a total demand that exceeds the combined production capacity of the factories. As a result, it becomes impossible to meet all the demand requirements while respecting the constraints on the production capacities of the factories.
+
+This outcome highlights a common scenario in transportation problems where changes in demand or supply can sometimes lead to infeasible solutions due to capacity constraints. In such cases, additional resources may need to be allocated or the problem formulation may need to be adjusted to find a feasible solution.

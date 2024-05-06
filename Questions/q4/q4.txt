@@ -128,16 +128,26 @@ data = [128, 119, 95, 97, 124, 128, 142, 98, 108, 120,
         124, 131, 133, 131, 88, 118, 116, 98, 112, 138,
         100, 112, 11, 150, 117, 122, 97, 116, 92, 122]
 
-# (d) Construct a box plot
-plt.boxplot(data)
-plt.title('Box plot of Total Daily Worker-hours')
-plt.ylabel('Worker-hours')
+# (d) Construct a box plot to detect outliers
+plt.figure(figsize=(10, 6))
+sns.boxplot(data)
+plt.title('Box plot of daily worker-hours')
+plt.xlabel('Daily Worker-Hours')
+plt.grid(True)
 plt.show()
-#save plot to same folder as the script
-plt.savefig('boxplot.png')
+#save plot to q4 folder
+plt.savefig('Questions/q4/q4.png')
+
+# FLAGS FOR OUTLIERS
+# Outliers are detected by the box plot. The box plot shows that there are outliers in the data.
+# The data points that lie outside the whiskers of the box plot are considered as outliers.
+
+# Detecting outliers
+outliers = [obs for obs in data if obs < mean - 3 * s or obs > mean + 3 * s]
+print("\nOutliers:", outliers)
 ```
 
-![Alt Text for Image](/workspaces/sys-640/Questions/q4/box_plot.png)
+![Alt Text for Image](/workspaces/sys-640/Questions/q4/q4.png)
 
 ## Part (e)
 

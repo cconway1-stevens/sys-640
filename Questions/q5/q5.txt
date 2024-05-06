@@ -1,0 +1,184 @@
+---
+runme:
+  id: 01HX63HQXQNNR4F4CT8T3CF72C
+  version: v3
+---
+
+## Problem Statement
+
+A grain cooperative with warehouses in Lincoln, Des Moines, and Pierre needs to meet the market demands in Denver, Kansas City, Minneapolis, and St Louis. The table below summarizes the transportation costs per unit from each warehouse to each market, along with the available supply at each warehouse and the demand at each market.
+
+\begin{align*}
+\begin{array}{|c|c|c|c|c|c|}
+\hline
+\text{From/To} & \text{Denver} & \text{Kansas City} & \text{Minneapolis} & \text{St Louis} & \text{Supply} \\
+\hline
+\text{Lincoln} & 6 & 4 & 8 & 9 & 750 \\
+\text{Des Moines} & 9 & 3 & 5 & 6 & 750 \\
+\text{Pierre} & 9 & 11 & 6 & 14 & 500 \\
+\text{Demand} & 400 & 700 & 400 & 500 & \\
+\hline
+\end{array}
+\end{align*}
+
+### (a) Network Representation
+
+To minimize the total transportation costs, a network representation can be formulated where each warehouse and market is a node. The edges between the nodes represent the shipping routes, with costs assigned as per the above table.
+
+
+[![](https://mermaid.ink/img/pako:eNqFUtFOwjAU_ZXmPmEyljHWtSuJL_ImJEbii9aHhlVosrXL2hmR8O-WDXUODPfpnN5zbs9N7h7WJpfAYFOLaosWjzOuka-F0mtT6BcOJ4RGBEfoSStnbzi8ovH4Fs2lfpe113QAjZKoJ_k7qTXcC22FvVNu500dQUfmh19xLpXWUlSmUNZbe-z6pyu3ME1rW7kQtRiN8MDU2ebSLo3S0rY7WdSR_1efDWyDJS-2e9kv9k9xfzI9KFnX0gfqwCD6eZiT7GKSXu88Rq_5mwECKGVdCpX7G9kfhRzcVpaSA_OwUJut48D1wQtF48xqp9fAXN3IAJoqF07OlfC3VQJ7E4X1r5XQz8aU3yJPge3hA1ichpSm2RTHKcVJnCVxADtgSUpCjDFNCcaTjETpIYDPdkAUkinxRSklJKFkQgOQuXKmXnY33Z724QtV0OOz?type=png)](https://mermaid.live/edit#pako:eNqFUtFOwjAU_ZXmPmEyljHWtSuJL_ImJEbii9aHhlVosrXL2hmR8O-WDXUODPfpnN5zbs9N7h7WJpfAYFOLaosWjzOuka-F0mtT6BcOJ4RGBEfoSStnbzi8ovH4Fs2lfpe113QAjZKoJ_k7qTXcC22FvVNu500dQUfmh19xLpXWUlSmUNZbe-z6pyu3ME1rW7kQtRiN8MDU2ebSLo3S0rY7WdSR_1efDWyDJS-2e9kv9k9xfzI9KFnX0gfqwCD6eZiT7GKSXu88Rq_5mwECKGVdCpX7G9kfhRzcVpaSA_OwUJut48D1wQtF48xqp9fAXN3IAJoqF07OlfC3VQJ7E4X1r5XQz8aU3yJPge3hA1ichpSm2RTHKcVJnCVxADtgSUpCjDFNCcaTjETpIYDPdkAUkinxRSklJKFkQgOQuXKmXnY33Z724QtV0OOz)
+
+
+
+### (b) Linear Programming (LP) Model Formulation
+
+The goal is to minimize the total transportation cost. Define the decision variable $x_{ij}$ where $i$ is the warehouse and $j$ is the market. $x_{ij}$ represents the quantity shipped from warehouse $i$ to market $j$.
+
+__Objective Function:__
+Minimize $Z = 6x_{LD} + 4x_{LKC} + 8x_{LM} + 9x_{LS} + 9x_{DD} + 3x_{DKC} + 5x_{DM} + 6x_{DS} + 9x_{PD} + 11x_{PKC} + 6x_{PM} + 14x_{PS}$
+
+**Constraints:**
+
+1. Supply Constraints:
+
+   - $x_{LD} + x_{LKC} + x_{LM} + x_{LS} \leq 750$ (Lincoln)
+   - $x_{DD} + x_{DKC} + x_{DM} + x_{DS} \leq 750$ (Des Moines)
+   - $x_{PD} + x_{PKC} + x_{PM} + x_{PS} \leq 500$ (Pierre)
+
+2. Demand Constraints:
+
+   - $x_{LD} + x_{DD} + x_{PD} \geq 400$ (Denver)
+   - $x_{LKC} + x_{DKC} + x_{PKC} \geq 700$ (Kansas City)
+   - $x_{LM} + x_{DM} + x_{PM} \geq 400$ (Minneapolis)
+   - $x_{LS} + x_{DS} + x_{PS} \geq 500$ (St Louis)
+
+3. Non-negativity Constraints:
+
+   - $x_{ij} \geq 0$ for all $i,j$.
+
+### (c) Extension to Include Omaha Warehouse
+
+Introducing an Omaha warehouse with a supply of 500 units and transportation costs as follows:
+
+\begin{align*}
+\begin{array}{|c|c|c|c|c|}
+\hline
+\text{From Omaha} & \text{Denver} & \text{Kansas City} & \text{Minneapolis} & \text{St Louis} \\
+\hline
+\text{Cost} & 6 & 5 & 7 & 9 \\
+\hline
+\end{array}
+\end{align*}
+
+**Extended LP Formulation:**
+
+**Additional Constraints:**
+
+- $x_{OD} + x_{OKC} + x_{OM} + x_{OS} \leq 500$ (Omaha)
+
+**Updated Demand Constraints:**
+
+- $x_{LD} + x_{DD} + x_{PD} + x_{OD} \geq 400$ (Denver)
+- $x_{LKC} + x_{DKC} + x_{PKC} + x_{OKC} \geq 700$ (Kansas City)
+- $x_{LM} + x_{DM} + x_{PM} + x_{OM} \geq 400$ (Minneapolis)
+- $x_{LS} + x_{DS} + x_{PS} + x_{OS} \geq 500$ (St Louis)
+
+### (d) Explanation of Costs
+
+
+The total minimal transportation cost with the addition of the Omaha warehouse is $10,350. Including Omaha in the distribution network provides more routing options, which allows for potentially more cost-effective shipments. Given the flexibility of more routes, the optimal solution in the extended model can utilize the most cost-efficient paths, ensuring that the total cost does not exceed that of the original scenario. This flexibility inherently allows for better or equal cost optimization compared to the model without Omaha.
+
+### (e) Solving the Model
+
+
+To solve the transportation model, I used a linear programming approach with the SciPy library in Python. Here is my step-by-step logic and code:
+
+1. **Define Costs and Variables**:
+    - Each route between a warehouse and a market has an associated cost.
+    - Decision variables represent the amount of grain transported from each warehouse to each market.
+
+2. **Formulate the Problem**:
+    - The objective is to minimize the total transportation costs.
+    - Constraints ensure that the supply from each warehouse does not exceed its capacity and that the demand at each market is met.
+
+3. **Implement Constraints**:
+    - Supply constraints: These ensure that the total grain shipped from each warehouse does not exceed its available supply.
+    - Demand constraints: These ensure that the total grain received by each market meets its required demand.
+
+4. **Solve Using Linear Programming**:
+    - The `linprog` function from SciPy's optimization module is used, specifying the cost coefficients, constraints, and bounds for the decision variables.
+
+5. **Interpret Results**:
+    - The solution provides the optimal quantities to ship from each warehouse to each market, along with the minimum cost.
+
+Here is the Python code used:
+
+```sh {"id":"01HX64046E6YQGBERH70FFWQZN"}
+
+from scipy.optimize import linprog
+
+# Define the costs matrix
+costs = [
+    6, 4, 8, 9,  # Lincoln to each market
+    9, 3, 5, 6,  # Des Moines to each market
+    9, 11, 6, 14, # Pierre to each market
+    6, 5, 7, 9   # Omaha to each market
+]
+
+# Inequality constraints for supply
+A_supply = [
+    [1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Lincoln
+    [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],  # Des Moines
+    [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0],  # Pierre
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]   # Omaha
+]
+b_supply = [750, 750, 500, 500]
+
+# Equality constraints for demand
+A_demand = [
+    [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],  # Denver
+    [0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],  # Kansas City
+    [0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0],  # Minneapolis
+    [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1]   # St Louis
+]
+b_demand = [400, 700, 400, 500]
+
+# Non-negativity constraints for all decision variables
+x_bounds = [(0, None) for _ in range(16)]
+
+# Solve the linear programming problem
+result = linprog(
+    c=costs,
+    A_ub=A_supply,
+    b_ub=b_supply,
+    A_eq=A_demand,
+    b_eq=b_demand,
+    bounds=x_bounds,
+    method='highs'
+)
+
+if result.success:
+    optimal_solution = result.x
+    optimal_cost = result.fun
+else:
+    optimal_solution = None
+    optimal_cost = None
+
+# Display the optimal solution and cost
+optimal_solution, optimal_cost
+```
+
+### Optimal Distribution Plan
+
+The optimal distribution plan with the lowest transportation cost is as follows:
+
+$$
+Lincoln to Denver: 300 units \\
+Lincoln to Kansas City: 450 units \\
+Des Moines to Kansas City: 250 units \\
+Des Moines to St Louis: 500 units \\
+Pierre to Minneapolis: 400 units \\
+Omaha to Denver: 100 units \\
+$$
+
+This distribution plan efficiently meets the demands of all markets while utilizing the supply from each warehouse optimally.

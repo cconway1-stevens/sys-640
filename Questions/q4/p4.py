@@ -1,6 +1,7 @@
 # Importing necessary libraries
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Given data
 data = [128, 119, 95, 97, 124, 128, 142, 98, 108, 120,
@@ -14,6 +15,7 @@ mean = np.mean(data)
 median = np.median(data)
 mode = np.argmax(np.bincount(data))
 
+print("Part A:----------------")
 print("Mean:", mean)
 print("Median:", median)
 print("Mode:", mode)
@@ -22,7 +24,7 @@ print("Mode:", mode)
 range_data = np.ptp(data)
 variance = np.var(data)
 std_deviation = np.std(data)
-
+print("Part B:----------------")
 print("\nRange:", range_data)
 print("Variance:", variance)
 print("Standard Deviation:", std_deviation)
@@ -32,7 +34,7 @@ s = np.std(data)
 intervals = [s, 2*s, 3*s]
 count_within_intervals = [np.sum((data >= mean - interval) & (data <= mean + interval)) for interval in intervals]
 proportions_within_intervals = [count / len(data) for count in count_within_intervals]
-
+print("Part C:----------------")
 print("\nCount within intervals ± s, ± 2s, and ± 3s:", count_within_intervals)
 print("Proportions within intervals ± s, ± 2s, and ± 3s:", proportions_within_intervals)
 
@@ -40,15 +42,24 @@ print("Proportions within intervals ± s, ± 2s, and ± 3s:", proportions_within
 outliers = [obs for obs in data if obs < mean - 3 * s or obs > mean + 3 * s]
 print("\nOutliers:", outliers)
 
-# (d) Construct a box plot
-plt.boxplot(data)
-plt.title('Box plot of Total Daily Worker-hours')
-plt.ylabel('Worker-hours')
-plt.show()
-#save plot to same folder as the script
-plt.savefig('boxplot.png')
 
+
+# (d) Construct a box plot to detect outliers
+print("Part D:----------------")
+plt.figure(figsize=(10, 6))
+sns.boxplot(data)
+plt.title('Box plot of daily worker-hours')
+plt.xlabel('Daily Worker-Hours')
+plt.grid(True)
+plt.show()
+#save plot to q4 folder
+plt.savefig('Questions/q4/q4.png')
+print("Box plot saved in the Questions/q4 folder @", './Questions/q4/q4.png')
+# Detecting outliers
+outliers = [obs for obs in data if obs < mean - 3 * s or obs > mean + 3 * s]
+print("\nOutliers:", outliers)
 
 # (e) Find the 70th percentile
+print("Part E:----------------")
 percentile_70 = np.percentile(data, 70)
 print("\n70th percentile for the data on total daily worker-hours:", percentile_70)
