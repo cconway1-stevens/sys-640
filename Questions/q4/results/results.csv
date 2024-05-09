@@ -1,0 +1,14 @@
+,Value
+Mean,115.82
+Median,117.5
+Modes,"[97, 112, 124, 128, 131]"
+Mode Frequencies,3
+Range,139
+Variance,453.17102040816326
+Standard Deviation,21.28781389453044
+±1 Standard Deviation,"{'Interval': array([ 94.53218611, 137.10781389]), 'Count': 42, 'Proportion': 0.84}"
+±2 Standard Deviations,"{'Interval': array([ 73.24437221, 158.39562779]), 'Count': 49, 'Proportion': 0.98}"
+±3 Standard Deviations,"{'Interval': array([ 51.95655832, 179.68344168]), 'Count': 49, 'Proportion': 0.98}"
+Outliers,[11]
+70th Percentile,128.0
+Interpretation of 70th Percentile,70% of the recorded worker-hours are less than or equal to 128.0 hours.
